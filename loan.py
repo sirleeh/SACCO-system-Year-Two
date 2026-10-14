@@ -20,6 +20,7 @@ class Loan:
     # Getters
     def get_loan_id(self):
         return self.__loan_id
+<<<<<<< HEAD
     
     def get_member_id(self):
         return self.__member_id
@@ -30,6 +31,18 @@ class Loan:
     def get_start_date(self):
         return self.__start_date
     
+=======
+    def get_member_id(self):
+        return self.__member_id
+    def get_loan_amount(self):
+        return self.__loan_amount
+    def get_current_balance(self):
+        return self.__current_balance
+    def get_payment_period(self):
+        return self.__payment_period
+    def get_start_date(self):
+        return self.__start_date
+>>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69
     def get_status(self):
         return self.__status
 
