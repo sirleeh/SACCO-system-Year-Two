@@ -39,9 +39,9 @@ def main():
         elif choice == "3":
             member_id = input("Member ID: ")
             account_id = input("Account ID: ")
-            amount = int(input("Amount: "))
-            method = input("Payment Method: ")
-            s = Savings(member_id, account_id, amount, method)
+            amount_saved = int(input("Amount: "))
+            payment_method = input("Payment Method: ")
+            s = Savings(member_id,account_id, amount_saved,payment_method)
             s.record_savings()
 
         elif choice == "4":
@@ -92,3 +92,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    

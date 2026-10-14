@@ -37,7 +37,7 @@ class Account:
             "member_id": self.__member_id,
             "balance": self.__balance,
             "account_type": self.account_type,
-            "status": self.status,
+            "status": self.__status,
             "date_opened": self.__date_opened
         })
 

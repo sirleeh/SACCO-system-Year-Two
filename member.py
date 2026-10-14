@@ -15,6 +15,7 @@ class Member:
         self.__status = "Active"
 
     # Getters
+    @property
     def get_member_id(self):
         return self.__member_id
     def get_join_date(self):
@@ -24,7 +25,7 @@ class Member:
     
     #Polymorphism implementation
     def display_details(self):
-        return f"----Member details----\nNames: {self.first_name} {self.last_name}\nMember ID: {self.__member_id}\nDate joined: {self.__join_date}\nStatus: {self.status}"
+        return f"----Member details----\nNames: {self.first_name} {self.last_name}\nMember ID: {self.__member_id}\nDate joined: {self.__join_date}\nStatus: {self.__status}"
 
     # Methods
     def register_member(self):
@@ -37,9 +38,9 @@ class Member:
             "last_name": self.last_name,
             "gender": self.gender,
             "phone": self.phone,
-            "national_id": self.__national_id,
+            "national_id": self.national_id,
             "join_date": self.__join_date,
-            "status": self.status
+            "status": self.__status
         })
 
         with open("members.json", "w") as f:

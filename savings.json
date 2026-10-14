@@ -1,20 +1,4 @@
 [
     {
-        "savings_id": "SAV-E9310DCC",
-        "member_id": "MBR-B6B9E92C",
-        "account_id": "ACC-197D362E",
-        "amount_saved": 10000,
-        "savings_date": "2026-09-23",
-        "payment_method": "Cash",
-        "new_balance": 15000
-    },
-    {
-        "savings_id": "SAV-01D1A215",
-        "member_id": "MBR-B6B9E92C",
-        "account_id": "ACC-197D362E",
-        "amount_saved": 20000,
-        "savings_date": "2026-09-23",
-        "payment_method": "cash",
-        "new_balance": 35000
-    }
-]
+        "savings_id": "S-1",
+        "member_id": 
