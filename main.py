@@ -17,10 +17,7 @@ def main():
         print("6. Approve Loan (Staff)")
         print("7. Make Loan Payment")
         print("8. Check Account Balance")
-<<<<<<< HEAD
-=======
         print("9. Register Staff")
->>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69
         print("0. Exit")
 
         choice = input("Enter choice: ")
@@ -36,36 +33,21 @@ def main():
 
         elif choice == "2":
             member_id = input("Member ID: ")
-<<<<<<< HEAD
-            account_type = input("Account Type: ")
-            acc = Account(member_id, account_type)
-=======
-            acc = Account(member_id,)
->>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69
+            acc = Account(member_id)
             acc.create_account()
 
         elif choice == "3":
             member_id = input("Member ID: ")
             account_id = input("Account ID: ")
-<<<<<<< HEAD
-            amount_saved = int(input("Amount: "))
-            payment_method = input("Payment Method: ")
-            s = Savings(member_id,account_id, amount_saved,payment_method)
-=======
             amount = int(input("Amount: "))
             method = input("Payment Method: ")
             s = Savings(member_id, account_id, amount, method)
->>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69
             s.record_savings()
 
         elif choice == "4":
             member_id = input("Member ID: ")
             amount = int(input("Loan Amount: "))
-<<<<<<< HEAD
-            period = input("Period: ")
-=======
             period = input("Payment Period: ")
->>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69
             method = input("Payment Method: ")
             purpose = input("Purpose: ")
             guarantor_id = input("Guarantor ID: ")
@@ -74,38 +56,17 @@ def main():
 
         elif choice == "5":
             member_id = input("Member ID: ")
-<<<<<<< HEAD
-            name = input("Guarantor Name: ")
-            phone = input("Phone: ")
-            amount = int(input("Amount Guaranteed: "))
-            loan_id = input("Loan ID: ")
-            g = Guarantor(member_id, name, phone, amount, loan_id)
-=======
             first_name = input("Guarantor's first name: ")
             last_name = input("Guarantor's last name: ")
             phone = input("Phone: ")
             loan_id = input("Loan ID: ")
             amount = int(input("Amount Guaranteed: "))
-            g = Guarantor(member_id, first_name,last_name, phone, amount, loan_id)
->>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69
+            g = Guarantor(member_id, first_name, last_name, phone, amount, loan_id)
             g.register_guarantor()
 
         elif choice == "6":
-            staff_id = input("Staff ID: ")
-<<<<<<< HEAD
-            first_name = input("First Name: ")
-            last_name = input("Last Name: ")
-            gender = input("Gender: ")
-            position = input("Position: ")
             loan_id = input("Loan ID: ")
-            st = Staff(staff_id, first_name, last_name, gender, position)
-            st.approve_loan(loan_id)
-=======
-            position = input("Position: ")
-            loan_id = input("Loan ID: ")
-            st = Staff(staff_id, first_name, last_name, gender, position)
-            st.approve_loan(loan_id, staff_id)
->>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69
+            Staff.approve_loan(loan_id)
 
         elif choice == "7":
             loan_id = input("Loan ID: ")
@@ -117,29 +78,20 @@ def main():
         elif choice == "8":
             account_id = input("Account ID: ")
             acc = Account("")
-            acc._Account__account_id = account_id
-            acc.check_balance()
+            acc.check_balance(account_id)
 
-<<<<<<< HEAD
-=======
         elif choice == "9":
-                    first_name = input("First Name: ")
-                    last_name = input("Last Name: ")
-                    gender = input("Gender: ")
-                    phone = input("Phone no: ")
-                    position = input("Position: ")
-                    st = Staff(first_name, last_name, gender, phone,position)
-                    st.register_staff()
+            first_name = input("First Name: ")
+            last_name = input("Last Name: ")
+            gender = input("Gender: ")
+            phone = input("Phone no: ")
+            position = input("Position: ")
+            st = Staff(first_name, last_name, gender, phone, position)
+            st.register_staff()
 
->>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69
         elif choice == "0":
             print("Exiting...")
             break
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     main()
-    
-=======
-    main()
->>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69

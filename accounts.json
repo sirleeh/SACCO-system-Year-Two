@@ -18,9 +18,41 @@
     {
         "account_id": "A001",
         "member_id": "M001",
-        "balance": 320000,
+        "balance": 376000,
         "account_type": "Savings",
         "status": "Active",
         "date_opened": "2026-10-14"
+    },
+    {
+        "account_id": "A004",
+        "member_id": "M004",
+        "balance": 15000,
+        "account_type": "Savings",
+        "status": "Active",
+        "date_opened": "2026-10-15"
+    },
+    {
+        "account_id": "A001",
+        "member_id": "M001",
+        "balance": 0,
+        "account_type": "Savings",
+        "status": "Active",
+        "date_opened": "2026-10-15"
+    },
+    {
+        "account_id": "A001",
+        "member_id": "M001",
+        "balance": 0,
+        "account_type": "Savings",
+        "status": "Active",
+        "date_opened": "2026-10-15"
+    },
+    {
+        "account_id": "A001",
+        "member_id": "M001",
+        "balance": 0,
+        "account_type": "Savings",
+        "status": "Active",
+        "date_opened": "2026-10-15"
     }
 ]

@@ -3,12 +3,13 @@ from datetime import datetime
 from account import Account
 
 class Savings(Account):
-    savings_count=0
+    savings_count = 0
+
     def __init__(self, member_id, account_id, amount_saved, payment_method):
         Savings.savings_count += 1
         super().__init__(member_id)
-        self.get_member_id
         self.__savings_id = f"S-{Savings.savings_count:03d}"
+        self.__member_id = member_id
         self.__account_id = account_id
         self.amount_saved = amount_saved
         self.__savings_date = datetime.now().strftime("%Y-%m-%d")
@@ -24,6 +25,9 @@ class Savings(Account):
     def get_account_id(self):
         return self.__account_id
     
+    def get_amount_saved(self):
+        return self.amount_saved
+
     def get_savings_date(self):
         return self.__savings_date
 
@@ -33,6 +37,7 @@ class Savings(Account):
         with open("accounts.json", "r") as f:
             accounts = json.load(f)
 
+        new_balance = 0
         for acc in accounts:
             if acc["account_id"] == self.__account_id:
                 acc["balance"] += self.amount_saved
@@ -48,7 +53,7 @@ class Savings(Account):
 
         savings.append({
             "savings_id": self.__savings_id,
-            "member_id": self.get_member_id,
+            "member_id": self.__member_id,
             "account_id": self.__account_id,
             "amount_saved": self.amount_saved,
             "savings_date": self.__savings_date,

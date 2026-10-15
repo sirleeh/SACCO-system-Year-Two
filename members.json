@@ -28,5 +28,25 @@
         "national_id": "009",
         "join_date": "2026-10-14",
         "status": "Active"
+    },
+    {
+        "member_id": "M004",
+        "first_name": "Alice",
+        "last_name": "Nambi",
+        "gender": "Female",
+        "phone": "0788123456",
+        "national_id": "CM9901",
+        "join_date": "2026-10-15",
+        "status": "Active"
+    },
+    {
+        "member_id": "M001",
+        "first_name": "Saalih",
+        "last_name": "Mubarak",
+        "gender": "Male",
+        "phone": "0740596585",
+        "national_id": "123456789",
+        "join_date": "2026-10-15",
+        "status": "Active"
     }
 ]

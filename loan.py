@@ -2,15 +2,15 @@ import json
 from datetime import datetime
 
 class Loan:
-    loan_count=0
-    def __init__(self, member_id, loan_amount, payment_period, payment_method, loan_purpose, guarantor_id):
+    loan_count = 0
+
+    def __init__(self, member_id, loan_amount, payment_period, payment_method, loan_purpose, guarantor_id=""):
         Loan.loan_count += 1
-    
         self.__loan_id = f"L-{Loan.loan_count:03d}"
         self.__member_id = member_id
-        self.loan_amount = loan_amount
+        self.__loan_amount = loan_amount
         self.__current_balance = loan_amount
-        self.payment_period = payment_period
+        self.__payment_period = payment_period
         self.__start_date = datetime.now().strftime("%Y-%m-%d")
         self.__status = "Pending"
         self.payment_method = payment_method
@@ -20,29 +20,22 @@ class Loan:
     # Getters
     def get_loan_id(self):
         return self.__loan_id
-<<<<<<< HEAD
     
     def get_member_id(self):
         return self.__member_id
     
-    def get_current_balance(self):
-        return self.__current_balance
-    
-    def get_start_date(self):
-        return self.__start_date
-    
-=======
-    def get_member_id(self):
-        return self.__member_id
     def get_loan_amount(self):
         return self.__loan_amount
+    
     def get_current_balance(self):
         return self.__current_balance
+    
     def get_payment_period(self):
         return self.__payment_period
+    
     def get_start_date(self):
         return self.__start_date
->>>>>>> f0f518e78a1b5f790799a6fccb5750435e7fbe69
+    
     def get_status(self):
         return self.__status
 

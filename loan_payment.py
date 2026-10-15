@@ -1,17 +1,16 @@
-from loan import Loan
 import json
 from datetime import datetime
 
-class LoanPayment(Loan):
-    loanpayment_count=0
-    def __init__(self, member_id,loan_amount,payment_period,payment_method,loan_purpose,guarantor_id,loan_id,amount_paid):
+class LoanPayment:
+    loanpayment_count = 0
 
+    def __init__(self, loan_id, amount_paid, payment_method):
         LoanPayment.loanpayment_count += 1
-        super().__init__(self,member_id,loan_amount,payment_period,payment_method,loan_purpose,guarantor_id)
         self.__payment_id = f"P{LoanPayment.loanpayment_count:03d}"
         self.__loan_id = loan_id
-        self.amount_paid = amount_paid
+        self.__amount_paid = amount_paid
         self.__payment_date = datetime.now().strftime("%Y-%m-%d")
+        self.payment_method = payment_method
 
     # Getters
     def get_payment_id(self):
@@ -19,6 +18,9 @@ class LoanPayment(Loan):
     
     def get_loan_id(self):
         return self.__loan_id
+
+    def get_amount_paid(self):
+        return self.__amount_paid
     
     def get_payment_date(self):
         return self.__payment_date
@@ -31,10 +33,12 @@ class LoanPayment(Loan):
         with open("loans.json", "r") as f:
             loans = json.load(f)
 
+        remaining = 0
         for loan in loans:
             if loan["loan_id"] == self.__loan_id:
                 loan["current_balance"] -= self.__amount_paid
-                if loan["current_balance"] == 0:
+                if loan["current_balance"] <= 0:
+                    loan["current_balance"] = 0
                     loan["status"] = "Cleared"
                 remaining = loan["current_balance"]
                 break
@@ -42,7 +46,7 @@ class LoanPayment(Loan):
         with open("loans.json", "w") as f:
             json.dump(loans, f, indent=4)
 
-        # 2. Append to payments
+        # Append to payments.json
         with open("payments.json", "r") as f:
             payments = json.load(f)
 

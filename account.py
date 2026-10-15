@@ -3,6 +3,7 @@ from datetime import datetime
 
 class Account:
     account_count = 0
+
     def __init__(self, member_id, balance=0, account_type="Savings"):
         Account.account_count += 1
         # Private attributes
@@ -18,12 +19,16 @@ class Account:
     # Getters
     def get_status(self):
         return self.__status
+
     def get_account_id(self):
         return self.__account_id
+
     def get_member_id(self):
         return self.__member_id
+
     def get_balance(self):
         return self.__balance
+
     def get_date_opened(self):
         return self.__date_opened
 
@@ -31,7 +36,8 @@ class Account:
     def create_account(self):
         with open("accounts.json", "r") as f:
             accounts = json.load(f)
-        self.__balance=0
+
+        self.__balance = 0
         accounts.append({
             "account_id": self.__account_id,
             "member_id": self.__member_id,
@@ -46,14 +52,15 @@ class Account:
 
         print(f"Account [{self.__account_id}] created for Member [{self.__member_id}]!")
 
-    def check_balance(self):
+    def check_balance(self, account_id=None):
+        acc_id = account_id if account_id else self.__account_id
         with open("accounts.json", "r") as f:
             accounts = json.load(f)
 
         for acc in accounts:
-            if acc["account_id"] == self.__account_id:
+            if acc["account_id"] == acc_id:
                 self.__balance = acc["balance"]
                 break
 
-        print(f"Account [{self.__account_id}] Balance: UGX {self.__balance}")
+        print(f"Account [{acc_id}] Balance: UGX {self.__balance}")
         return self.__balance

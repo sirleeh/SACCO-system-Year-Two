@@ -1,31 +1,38 @@
 import json
 from datetime import datetime
+from person import Person
 
-class Member:
+class Member(Person):
     member_count = 0
+
     def __init__(self, first_name, last_name, gender, phone, national_id):
+        super().__init__(first_name, last_name, gender, phone, national_id)
         Member.member_count += 1
         self.__member_id = f"M{Member.member_count:03d}"
         self.first_name = first_name
         self.last_name = last_name
-        self.gender=gender
-        self.phone= phone
+        self.gender = gender
+        self.phone = phone
         self.national_id = national_id
         self.__join_date = datetime.now().strftime("%Y-%m-%d")
         self.__status = "Active"
 
     # Getters
-    @property
     def get_member_id(self):
         return self.__member_id
+
     def get_join_date(self):
         return self.__join_date
+
     def get_status(self):
         return self.__status
     
-    #Polymorphism implementation
+    def get_role(self):
+        return "Member"
+
+    # Polymorphism implementation
     def display_details(self):
-        return f"----Member details----\nNames: {self.first_name} {self.last_name}\nMember ID: {self.__member_id}\nDate joined: {self.__join_date}\nStatus: {self.__status}"
+        return f"----Member details----\nNames: {self.get_full_name()}\nMember ID: {self.__member_id}\nDate joined: {self.__join_date}\nStatus: {self.__status}"
 
     # Methods
     def register_member(self):

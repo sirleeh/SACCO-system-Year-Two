@@ -1,1 +1,29 @@
-[]
+[
+    {
+        "guarantor_id": "G001",
+        "member_id": "M004",
+        "first_name": "Bob",
+        "last_name": "Kato",
+        "phone": "0777987654",
+        "amount_guaranteed": 20000,
+        "loan_id": "L-003"
+    },
+    {
+        "guarantor_id": "G001",
+        "member_id": "M001",
+        "first_name": "Guar",
+        "last_name": "Antor",
+        "phone": "0700333444",
+        "amount_guaranteed": 10000,
+        "loan_id": "L-001"
+    },
+    {
+        "guarantor_id": "G001",
+        "member_id": "M001",
+        "first_name": "Guar",
+        "last_name": "Antor",
+        "phone": "0711111111",
+        "amount_guaranteed": 2500,
+        "loan_id": "L-001"
+    }
+]

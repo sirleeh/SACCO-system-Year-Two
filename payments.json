@@ -1,1 +1,26 @@
-[]
+[
+    {
+        "payment_id": "P001",
+        "loan_id": "L-003",
+        "amount_paid": 10000,
+        "payment_method": "Mobile Money",
+        "payment_date": "2026-10-15",
+        "remaining_balance": 30000
+    },
+    {
+        "payment_id": "P001",
+        "loan_id": "L-001",
+        "amount_paid": 5000,
+        "payment_method": "Cash",
+        "payment_date": "2026-10-15",
+        "remaining_balance": 15000
+    },
+    {
+        "payment_id": "P001",
+        "loan_id": "L-001",
+        "amount_paid": 2000,
+        "payment_method": "Cash",
+        "payment_date": "2026-10-15",
+        "remaining_balance": 13000
+    }
+]

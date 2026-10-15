@@ -22,5 +22,53 @@
         "guarantor_id": "",
         "start_date": "2026-09-23",
         "status": "Pending"
+    },
+    {
+        "loan_id": "L-003",
+        "member_id": "M004",
+        "loan_amount": 40000,
+        "current_balance": 30000,
+        "payment_period": "4",
+        "payment_method": "Cash",
+        "loan_purpose": "School Fees",
+        "guarantor_id": "G001",
+        "start_date": "2026-10-15",
+        "status": "Approved"
+    },
+    {
+        "loan_id": "L-001",
+        "member_id": "M001",
+        "loan_amount": 20000,
+        "current_balance": 13000,
+        "payment_period": "3",
+        "payment_method": "Cash",
+        "loan_purpose": "Personal",
+        "guarantor_id": "G001",
+        "start_date": "2026-10-15",
+        "status": "Approved"
+    },
+    {
+        "loan_id": "L-001",
+        "member_id": "M001",
+        "loan_amount": 200000,
+        "current_balance": 200000,
+        "payment_period": "4 Months",
+        "payment_method": "cash",
+        "loan_purpose": "Tution",
+        "guarantor_id": "G001",
+        "start_date": "2026-10-15",
+        "status": "Pending"
+    },
+    {
+        "loan_id": "L-001",
+        "member_id": "M001",
+        "loan_amount": 5000,
+        "current_balance": 5000,
+        "payment_period": "1",
+        "payment_method": "Cash",
+        "loan_purpose": "Tools",
+        "guarantor_id": "",
+        "start_date": "2026-10-15",
+        "status": "Pending"
     }
 ]
