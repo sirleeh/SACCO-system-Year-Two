@@ -4,9 +4,14 @@ from datetime import datetime
 class Loan:
     loan_count = 0
 
+    @classmethod
+    def generate_loan_id(cls):
+        cls.loan_count += 1
+        return f"L{cls.loan_count:03d}"
+
     def __init__(self, member_id, loan_amount, payment_period, payment_method, loan_purpose, guarantor_id=""):
         Loan.loan_count += 1
-        self.__loan_id = f"L-{Loan.loan_count:03d}"
+        self.__loan_id =self.generate_loan_id()
         self.__member_id = member_id
         self.__loan_amount = loan_amount
         self.__current_balance = loan_amount

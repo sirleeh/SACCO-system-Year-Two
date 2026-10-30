@@ -4,9 +4,14 @@ from datetime import datetime
 class LoanPayment:
     loanpayment_count = 0
 
+    @classmethod
+    def generate_loanpayment_id(cls):
+        cls.loanpayment_count += 1
+        return f"P{cls.loanpayment_count:03d}"
+
     def __init__(self, loan_id, amount_paid, payment_method):
         LoanPayment.loanpayment_count += 1
-        self.__payment_id = f"P{LoanPayment.loanpayment_count:03d}"
+        self.__loanpayment_id = self.generate_loanpayment_id()
         self.__loan_id = loan_id
         self.__amount_paid = amount_paid
         self.__payment_date = datetime.now().strftime("%Y-%m-%d")

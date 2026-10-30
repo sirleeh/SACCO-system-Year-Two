@@ -4,15 +4,16 @@ from datetime import datetime
 class Account:
     account_count = 0
 
+    @classmethod
+    def generate_account_id(cls):
+        cls.account_count += 1
+        return f"A{cls.account_count:03d}"
+
     def __init__(self, member_id, balance=0, account_type="Savings"):
-        Account.account_count += 1
-        # Private attributes
-        self.__account_id = f"A{Account.account_count:03d}"
+        self.__account_id =self.generate_account_id()
         self.__member_id = member_id
         self.__balance = balance
         self.__date_opened = datetime.now().strftime("%Y-%m-%d")
-
-        # Public attributes
         self.account_type = account_type
         self.__status = "Active"
 

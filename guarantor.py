@@ -2,12 +2,16 @@ import json
 from member import Member
 
 class Guarantor(Member):
-    Guarantor_count = 0
+    guarantor_count = 0
 
-    def __init__(self, member_id, first_name, last_name, phone, amount_guaranteed, loan_id):
-        super().__init__(first_name, last_name, gender="N/A", phone=phone, national_id="N/A")
-        Guarantor.Guarantor_count += 1
-        self.__guarantor_id = f"G{Guarantor.Guarantor_count:03d}"
+    @classmethod
+    def generate_guarantor_id(cls):
+        cls.guarantor_count += 1
+        return f"G{cls.guarantor_count:03d}"
+
+    def __init__(self,first_name, last_name, gender,phone,national_id,amount_guaranteed, loan_id, member_id ):
+        super().__init__(first_name, last_name, gender, phone, national_id)
+        self.__guarantor_id = self.generate_guarantor_id()
         self.__member_id = member_id
         self.__amount_guaranteed = amount_guaranteed
         self.__loan_id = loan_id
@@ -25,10 +29,12 @@ class Guarantor(Member):
     def get_amount_guaranteed(self):
         return self.__amount_guaranteed
 
-    def get_role(self):
-        return "Guarantor"
+#Polymophism implementation
+    def display_details(self):
+        member_details= super().display_details()
+        return(f"{member_details}\nGuarantor ID:{self.__guarantor_id}\nMember ID:{self.__member_id}\nLoan ID:{self.__loan_id}\nAmount Guaranteed:{self.__amount_guaranteed}" )
 
-    # Methods
+# Methods
     def register_guarantor(self):
         # 1. Update loan in loans.json
         with open("loans.json", "r") as f:

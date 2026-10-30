@@ -2,13 +2,16 @@ import json
 from datetime import datetime
 from account import Account
 
-class Savings(Account):
+class Savings:
     savings_count = 0
 
+    @classmethod
+    def generate_savings_id(cls):
+        cls.savings_count += 1
+        return f"S{cls.savings_count:03d}"
+
     def __init__(self, member_id, account_id, amount_saved, payment_method):
-        Savings.savings_count += 1
-        super().__init__(member_id)
-        self.__savings_id = f"S-{Savings.savings_count:03d}"
+        self.__savings_id = self.generate_savings_id()
         self.__member_id = member_id
         self.__account_id = account_id
         self.amount_saved = amount_saved

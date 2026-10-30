@@ -4,10 +4,14 @@ from member import Member
 class Staff(Member):
     staff_count = 0
 
-    def __init__(self, first_name, last_name, gender, phone, position):
-        super().__init__(first_name, last_name, gender, phone, national_id="N/A")
-        Staff.staff_count += 1
-        self.__staff_ID = f"S{Staff.staff_count:03d}"
+    @classmethod
+    def generate_staff_id(cls):
+        cls.staff_count += 1
+        return f"S{cls.staff_count:03d}"
+
+    def __init__(self, first_name, last_name, gender, phone, position,national_id):
+        super().__init__(first_name, last_name, gender, phone, national_id)
+        self.__staff_id=self.generate_staff_id()
         self.position = position
 
     # Getters
@@ -15,10 +19,9 @@ class Staff(Member):
         return self.__staff_ID
 
     # Polymorphism implementation
-    def get_role(self):
-        return f"Staff-{self.position}"
 
     def display_details(self):
+        member_details= super().display_details()
         return f"Staff: {self.get_full_name()}\nStaffID: {self.__staff_ID}\nPosition: {self.position}"
 
     def register_staff(self):

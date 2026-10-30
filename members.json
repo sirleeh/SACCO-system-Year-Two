@@ -48,5 +48,15 @@
         "national_id": "123456789",
         "join_date": "2026-10-15",
         "status": "Active"
+    },
+    {
+        "member_id": "M001",
+        "first_name": "zulfah",
+        "last_name": "nabatanzi",
+        "gender": "female",
+        "phone": "078996554",
+        "national_id": "001",
+        "join_date": "2026-10-30",
+        "status": "Active"
     }
 ]

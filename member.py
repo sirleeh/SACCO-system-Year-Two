@@ -1,14 +1,16 @@
 import json
 from datetime import datetime
-from person import Person
 
-class Member(Person):
+class Member:
     member_count = 0
 
+    @classmethod
+    def generate_member_id(cls):
+        cls.member_count += 1
+        return f"M{cls.member_count:03d}"
+
     def __init__(self, first_name, last_name, gender, phone, national_id):
-        super().__init__(first_name, last_name, gender, phone, national_id)
-        Member.member_count += 1
-        self.__member_id = f"M{Member.member_count:03d}"
+        self.__member_id= self.generate_member_id()
         self.first_name = first_name
         self.last_name = last_name
         self.gender = gender
@@ -27,8 +29,6 @@ class Member(Person):
     def get_status(self):
         return self.__status
     
-    def get_role(self):
-        return "Member"
 
     # Polymorphism implementation
     def display_details(self):
