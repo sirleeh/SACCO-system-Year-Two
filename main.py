@@ -86,7 +86,8 @@ def main():
             gender = input("Gender: ")
             phone = input("Phone no: ")
             position = input("Position: ")
-            st = Staff(first_name, last_name, gender, phone, position)
+            national_id=input("national ID:")
+            st = Staff(first_name, last_name, gender, phone, position,national_id)
             st.register_staff()
 
         elif choice == "0":

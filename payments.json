@@ -22,5 +22,13 @@
         "payment_method": "Cash",
         "payment_date": "2026-10-15",
         "remaining_balance": 13000
+    },
+    {
+        "payment_id": "P002",
+        "loan_id": "L-001",
+        "amount_paid": 5000,
+        "payment_method": "cash",
+        "payment_date": "2026-11-02",
+        "remaining_balance": 3000
     }
 ]

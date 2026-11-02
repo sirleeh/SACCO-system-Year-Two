@@ -52,5 +52,14 @@
         "savings_date": "2026-10-15",
         "payment_method": "Cash",
         "new_balance": 376000
+    },
+    {
+        "savings_id": "S001",
+        "member_id": "M001",
+        "account_id": "A001",
+        "amount_saved": 20000,
+        "savings_date": "2026-11-02",
+        "payment_method": "cash",
+        "new_balance": 396000
     }
 ]

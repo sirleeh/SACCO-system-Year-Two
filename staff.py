@@ -15,21 +15,21 @@ class Staff(Member):
         self.position = position
 
     # Getters
-    def get_staff_ID(self):
-        return self.__staff_ID
+    def get_staff_id(self):
+        return self.__staff_id
 
     # Polymorphism implementation
 
     def display_details(self):
         member_details= super().display_details()
-        return f"Staff: {self.get_full_name()}\nStaffID: {self.__staff_ID}\nPosition: {self.position}"
+        return f"Staff: {self.get_full_name()}\nStaffID: {self.__staff_id}\nPosition: {self.position}"
 
     def register_staff(self):
         with open("staff.json", "r") as f:
             staff = json.load(f)
 
         staff.append({
-            "staff_id": self.__staff_ID,
+            "staff_id": self.__staff_id,
             "first_name": self.first_name,
             "last_name": self.last_name,
             "gender": self.gender,
@@ -40,7 +40,7 @@ class Staff(Member):
         with open("staff.json", "w") as f:
             json.dump(staff, f, indent=4)
 
-        print(f"Staff [{self.__staff_ID}] {self.first_name} {self.last_name} registered!")
+        print(f"Staff [{self.__staff_id}] {self.first_name} {self.last_name} registered!")
 
     # Loan Approval / Rejection
     @staticmethod

@@ -18,8 +18,8 @@ class LoanPayment:
         self.payment_method = payment_method
 
     # Getters
-    def get_payment_id(self):
-        return self.__payment_id
+    def get_loanpayment_id(self):
+        return self.__loanpayment_id
     
     def get_loan_id(self):
         return self.__loan_id
@@ -56,7 +56,7 @@ class LoanPayment:
             payments = json.load(f)
 
         payments.append({
-            "payment_id": self.__payment_id,
+            "payment_id": self.__loanpayment_id,
             "loan_id": self.__loan_id,
             "amount_paid": self.__amount_paid,
             "payment_method": self.payment_method,

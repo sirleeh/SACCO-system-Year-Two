@@ -39,7 +39,7 @@
         "loan_id": "L-001",
         "member_id": "M001",
         "loan_amount": 20000,
-        "current_balance": 13000,
+        "current_balance": 3000,
         "payment_period": "3",
         "payment_method": "Cash",
         "loan_purpose": "Personal",
@@ -69,6 +69,18 @@
         "loan_purpose": "Tools",
         "guarantor_id": "",
         "start_date": "2026-10-15",
+        "status": "Pending"
+    },
+    {
+        "loan_id": "L002",
+        "member_id": "M001",
+        "loan_amount": 10000,
+        "current_balance": 10000,
+        "payment_period": "3months",
+        "payment_method": "cash",
+        "loan_purpose": "fees",
+        "guarantor_id": "G001",
+        "start_date": "2026-11-02",
         "status": "Pending"
     }
 ]

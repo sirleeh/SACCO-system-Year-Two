@@ -18,7 +18,7 @@
     {
         "account_id": "A001",
         "member_id": "M001",
-        "balance": 376000,
+        "balance": 396000,
         "account_type": "Savings",
         "status": "Active",
         "date_opened": "2026-10-14"
