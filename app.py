@@ -133,6 +133,7 @@ def savings_page():
 @app.route("/loans", methods=["GET", "POST"])
 def loans_page():
     members, staff_list, accounts, savings_list, loans, guarantors, payments = load_all_data(storage)
+    error = None
 
     if request.method == "POST":
         action = request.form["action"]
@@ -147,9 +148,14 @@ def loans_page():
             loan_purpose = request.form["loan_purpose"]
 
             member = find_member(members, member_id)
-            loan = Loan(member, loan_amount, payment_period, payment_method, loan_purpose, today)
-            loans.append(loan)
-            save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
+            limit = Loan.calculate_loan_limit(member, accounts)
+            if not Loan.is_within_limit(member, loan_amount, accounts):
+                error = (f"Loan of UGX {loan_amount} rejected. {member.get_full_name()}'s loan limit "
+                         f"is UGX {limit} (3 x account balance).")
+            else:
+                loan = Loan(member, loan_amount, payment_period, payment_method, loan_purpose, today)
+                loans.append(loan)
+                save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
         # Staff approves or rejects a pending loan
         elif action == "decision":
@@ -166,7 +172,7 @@ def loans_page():
                 staff.reject_loan(loan)
             save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
-    return render_template("loans.html", loans=loans, members=members, staff_list=staff_list)
+    return render_template("loans.html", loans=loans, members=members, staff_list=staff_list, error=error)
 
 
 # Route to add guarantors to a loan

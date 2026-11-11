@@ -9,6 +9,22 @@ class Loan:
         cls.count += 1
         return f"L{cls.count:03d}"
 
+    LOAN_LIMIT_MULTIPLIER = 3
+
+    # Loan limit = 3 times the current balance of the member's account(s)
+    @classmethod
+    def calculate_loan_limit(cls, member, accounts):
+        total_balance = 0
+        for account in accounts:
+            if account.member.get_member_id() == member.get_member_id():
+                total_balance += account.balance
+        return cls.LOAN_LIMIT_MULTIPLIER * total_balance
+
+    # Check that the amount being borrowed falls within the member's loan limit
+    @classmethod
+    def is_within_limit(cls, member, amount, accounts):
+        return 0 < amount <= cls.calculate_loan_limit(member, accounts)
+
     def __init__(self, member, loan_amount, payment_period, payment_method, loan_purpose, start_date, loan_id=None):
         if loan_id is None:
             self.__loan_id = Loan.generate_id()
