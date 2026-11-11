@@ -18,6 +18,7 @@
     <hr>
 
     <h2>Add Guarantor</h2>
+    {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
     <form method="POST" action="/guarantors">
         <p>Loan:
             <select name="loan_id" required>

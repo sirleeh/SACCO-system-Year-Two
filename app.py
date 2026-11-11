@@ -179,6 +179,7 @@ def loans_page():
 @app.route("/guarantors", methods=["GET", "POST"])
 def guarantors_page():
     members, staff_list, accounts, savings_list, loans, guarantors, payments = load_all_data(storage)
+    error = None
 
     if request.method == "POST":
         loan_id = request.form["loan_id"]
@@ -188,13 +189,19 @@ def guarantors_page():
         loan = find_loan(loans, loan_id)
         member = find_member(members, member_id)
 
-        # Create Guarantor object and attach to the loan
-        g = Guarantor(member, loan, amount_guaranteed)
-        if loan.add_guarantor(g):
-            guarantors.append(g)
-            save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
+        # A guarantor's balance must be at least a quarter of the loan amount
+        if not loan.can_be_guaranteed_by(member):
+            error = (f"{member.get_full_name()} cannot guarantee loan {loan.get_loan_id()}. "
+                     f"Balance must be at least UGX {loan.get_required_guarantor_balance():.0f} "
+                     f"(1/4 of the loan amount).")
+        else:
+            # Create Guarantor object and attach to the loan
+            g = Guarantor(member, loan, amount_guaranteed)
+            if loan.add_guarantor(g):
+                guarantors.append(g)
+                save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
-    return render_template("guarantors.html", guarantors=guarantors, loans=loans, members=members)
+    return render_template("guarantors.html", guarantors=guarantors, loans=loans, members=members, error=error)
 
 
 # Route to record loan repayments

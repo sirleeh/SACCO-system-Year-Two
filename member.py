@@ -20,6 +20,19 @@ class Member(Person):
             self.__member_id = member_id
         self.__join_date = join_date
         self.__status = "Active"
+        self.accounts = []  # Composition: Member has Account objects
+
+    # Attach an account to this member
+    def add_account(self, account):
+        if account not in self.accounts:
+            self.accounts.append(account)
+
+    # Total current balance across all of the member's accounts
+    def get_total_balance(self):
+        total = 0
+        for account in self.accounts:
+            total += account.balance
+        return total
 
     # Getter methods
     def get_member_id(self):

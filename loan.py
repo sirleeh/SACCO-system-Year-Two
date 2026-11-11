@@ -25,6 +25,15 @@ class Loan:
     def is_within_limit(cls, member, amount, accounts):
         return 0 < amount <= cls.calculate_loan_limit(member, accounts)
 
+    GUARANTOR_BALANCE_FRACTION = 0.25
+
+    # A guarantor's balance must be at least a quarter of the loan amount
+    def get_required_guarantor_balance(self):
+        return self.__loan_amount * Loan.GUARANTOR_BALANCE_FRACTION
+
+    def can_be_guaranteed_by(self, guarantor_member):
+        return guarantor_member.get_total_balance() >= self.get_required_guarantor_balance()
+
     def __init__(self, member, loan_amount, payment_period, payment_method, loan_purpose, start_date, loan_id=None):
         if loan_id is None:
             self.__loan_id = Loan.generate_id()

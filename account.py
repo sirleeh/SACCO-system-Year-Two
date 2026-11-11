@@ -18,6 +18,7 @@ class Account:
         self.__balance = 0    # Private attribute (encapsulation)
         self.__date_opened = date_opened
         self.account_type = "General"
+        self.member.add_account(self)  # Member keeps track of its accounts
 
     def get_account_id(self):
         return self.__account_id
