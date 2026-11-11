@@ -1,70 +1,49 @@
-import json
-from datetime import datetime
-from account import Account
+# Class to represent a savings deposit transaction
+class SavingsDeposit:
 
-class Savings:
-    savings_count = 0
+    count = 0
 
+    # Class method for auto-incrementing Savings ID
     @classmethod
-    def generate_savings_id(cls):
-        cls.savings_count += 1
-        return f"S{cls.savings_count:03d}"
+    def generate_id(cls):
+        cls.count += 1
+        return f"S{cls.count:03d}"
 
-    def __init__(self, member_id, account_id, amount_saved, payment_method):
-        self.__savings_id = self.generate_savings_id()
-        self.__member_id = member_id
-        self.__account_id = account_id
-        self.amount_saved = amount_saved
-        self.__savings_date = datetime.now().strftime("%Y-%m-%d")
+    def __init__(self, account, amount_saved, payment_method, savings_date, savings_id=None):
+        if savings_id is None:
+            self.__savings_id = SavingsDeposit.generate_id()
+        else:
+            self.__savings_id = savings_id
+        self.account = account  # Composition: SavingsDeposit has an Account object
+        self.__amount_saved = amount_saved
         self.payment_method = payment_method
+        self.__savings_date = savings_date
 
-    # Getters
+    # Getter methods
     def get_savings_id(self):
         return self.__savings_id
-    
-    def get_member_id(self):
-        return self.__member_id
-    
-    def get_account_id(self):
-        return self.__account_id
-    
+
     def get_amount_saved(self):
-        return self.amount_saved
+        return self.__amount_saved
 
     def get_savings_date(self):
         return self.__savings_date
 
-    # Methods
+    # Delegation: call the account's deposit method to update balance
     def record_savings(self):
-        # Update account balance in accounts.json
-        with open("accounts.json", "r") as f:
-            accounts = json.load(f)
+        return self.account.deposit(self.__amount_saved)
 
-        new_balance = 0
-        for acc in accounts:
-            if acc["account_id"] == self.__account_id:
-                acc["balance"] += self.amount_saved
-                new_balance = acc["balance"]
-                break
+    def __str__(self):
+        return (f"{self.__savings_id}\t{self.__savings_date}\t"
+                f"{self.account.get_account_id()}\tUGX {self.__amount_saved}\t{self.payment_method}")
 
-        with open("accounts.json", "w") as f:
-            json.dump(accounts, f, indent=4)
-
-        # Append transaction record to savings.json
-        with open("savings.json", "r") as f:
-            savings = json.load(f)
-
-        savings.append({
+    # Convert object to dictionary for JSON storage
+    def to_dict(self):
+        return {
             "savings_id": self.__savings_id,
-            "member_id": self.__member_id,
-            "account_id": self.__account_id,
-            "amount_saved": self.amount_saved,
-            "savings_date": self.__savings_date,
+            "member_id": self.account.member.get_member_id(),
+            "account_id": self.account.get_account_id(),
+            "amount_saved": self.__amount_saved,
             "payment_method": self.payment_method,
-            "new_balance": new_balance
-        })
-
-        with open("savings.json", "w") as f:
-            json.dump(savings, f, indent=4)
-
-        print(f"Saved UGX {self.amount_saved} for Member [{self.__member_id}]. New Balance: UGX {new_balance}")
+            "savings_date": self.__savings_date
+        }

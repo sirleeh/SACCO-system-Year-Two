@@ -1,25 +1,27 @@
-import json
-from datetime import datetime
+from person import Person
 
-class Member:
-    member_count = 0
 
+# Member inherits from Person (Inheritance)
+class Member(Person):
+
+    count = 0
+
+    # Class method for auto-incrementing Member ID
     @classmethod
-    def generate_member_id(cls):
-        cls.member_count += 1
-        return f"M{cls.member_count:03d}"
+    def generate_id(cls):
+        cls.count += 1
+        return f"M{cls.count:03d}"
 
-    def __init__(self, first_name, last_name, gender, phone, national_id):
-        self.__member_id= self.generate_member_id()
-        self.first_name = first_name
-        self.last_name = last_name
-        self.gender = gender
-        self.phone = phone
-        self.national_id = national_id
-        self.__join_date = datetime.now().strftime("%Y-%m-%d")
+    def __init__(self, first_name, last_name, gender, phone, national_id, join_date, member_id=None):
+        super().__init__(first_name, last_name, gender, phone, national_id)
+        if member_id is None:
+            self.__member_id = Member.generate_id()
+        else:
+            self.__member_id = member_id
+        self.__join_date = join_date
         self.__status = "Active"
 
-    # Getters
+    # Getter methods
     def get_member_id(self):
         return self.__member_id
 
@@ -28,29 +30,40 @@ class Member:
 
     def get_status(self):
         return self.__status
-    
 
-    # Polymorphism implementation
+    # Setter method for member status
+    def set_status(self, status):
+        if status == "Active" or status == "Inactive":
+            self.__status = status
+            return True
+        else:
+            print("Status must be Active or Inactive")
+            return False
+
+    def is_active(self):
+        return self.__status == "Active"
+
+    # Method overriding (Polymorphism)
     def display_details(self):
-        return f"----Member details----\nNames: {self.get_full_name()}\nMember ID: {self.__member_id}\nDate joined: {self.__join_date}\nStatus: {self.__status}"
+        person_details = super().display_details()
+        return (f"---- Member Details ----\n"
+                f"Member ID:\t{self.__member_id}\n"
+                f"{person_details}\n"
+                f"Date joined:\t{self.__join_date}\n"
+                f"Status:\t\t{self.__status}")
 
-    # Methods
-    def register_member(self):
-        with open("members.json", "r") as f:
-            members = json.load(f)
+    def __str__(self):
+        return f"{self.__member_id}\t{self.get_full_name()}\t{self.get_phone()}\t{self.__status}"
 
-        members.append({
+    # Convert object to dictionary for JSON storage
+    def to_dict(self):
+        return {
             "member_id": self.__member_id,
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "gender": self.gender,
-            "phone": self.phone,
-            "national_id": self.national_id,
+            "first_name": self._first_name,
+            "last_name": self._last_name,
+            "gender": self._gender,
+            "phone": self.get_phone(),
+            "national_id": self.get_national_id(),
             "join_date": self.__join_date,
             "status": self.__status
-        })
-
-        with open("members.json", "w") as f:
-            json.dump(members, f, indent=4)
-
-        print(f"Member [{self.__member_id}] {self.first_name} {self.last_name} registered!")
+        }

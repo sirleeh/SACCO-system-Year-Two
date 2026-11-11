@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SACCO System - Payments</title>
+</head>
+<body>
+    <h1>SACCO Management System</h1>
+    <p>
+        <a href="/">Home</a> |
+        <a href="/members">Members</a> |
+        <a href="/staff">Staff</a> |
+        <a href="/accounts">Accounts</a> |
+        <a href="/savings">Savings</a> |
+        <a href="/loans">Loans</a> |
+        <a href="/guarantors">Guarantors</a> |
+        <a href="/payments">Payments</a>
+    </p>
+    <hr>
+
+    <h2>Make Loan Payment</h2>
+    <form method="POST" action="/payments">
+        <p>Loan:
+            <select name="loan_id" required>
+                <option value="">Choose a Loan</option>
+                {% for l in loans %}
+                    <option value="{{ l.loan_id }}">{{ l.loan_id }} (Balance: UGX {{ l.current_balance }})</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Amount Paid (UGX): <input type="number" name="amount_paid" required></p>
+        <p>Payment Method:
+            <select name="payment_method" required>
+                <option value="">Choose Payment Method</option>
+                <option value="Cash">Cash</option>
+                <option value="Mobile Money">Mobile Money</option>
+                <option value="Bank">Bank</option>
+            </select>
+        </p>
+        <button type="submit">Pay</button>
+    </form>
+
+    <hr>
+
+    <h2>Payments List</h2>
+    <table border="1">
+        <tr>
+            <th>Payment ID</th>
+            <th>Loan ID</th>
+            <th>Amount Paid (UGX)</th>
+            <th>Method</th>
+            <th>Date</th>
+        </tr>
+        {% for p in payments %}
+        <tr>
+            <td>{{ p.payment_id }}</td>
+            <td>{{ p.loan_id }}</td>
+            <td>{{ p.amount_paid }}</td>
+            <td>{{ p.payment_method }}</td>
+            <td>{{ p.payment_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

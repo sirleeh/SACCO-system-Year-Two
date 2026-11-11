@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SACCO System - Accounts</title>
+</head>
+<body>
+    <h1>SACCO Management System</h1>
+    <p>
+        <a href="/">Home</a> |
+        <a href="/members">Members</a> |
+        <a href="/staff">Staff</a> |
+        <a href="/accounts">Accounts</a> |
+        <a href="/savings">Savings</a> |
+        <a href="/loans">Loans</a> |
+        <a href="/guarantors">Guarantors</a> |
+        <a href="/payments">Payments</a>
+    </p>
+    <hr>
+
+    <h2>Create Account</h2>
+    <form method="POST" action="/accounts">
+        <input type="hidden" name="action" value="create">
+        <p>Member:
+            <select name="member_id" required>
+                <option value="">Choose a Member</option>
+                {% for m in members %}
+                    <option value="{{ m.member_id }}">{{ m.member_id }} - {{ m.first_name }} {{ m.last_name }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Account Type:
+            <select name="account_type" required>
+                <option value="">Choose Account Type</option>
+                <option value="Savings">Savings</option>
+                <option value="Fixed Deposit">Fixed Deposit</option>
+            </select>
+        </p>
+        <button type="submit">Create Account</button>
+    </form>
+
+    <hr>
+
+    <h2>Withdraw from Account</h2>
+    <form method="POST" action="/accounts">
+        <input type="hidden" name="action" value="withdraw">
+        <p>Account:
+            <select name="account_id" required>
+                <option value="">Choose an Account</option>
+                {% for acc in accounts %}
+                    <option value="{{ acc.account_id }}">{{ acc.account_id }} ({{ acc.account_type }} - UGX {{ acc.balance }})</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Amount: <input type="number" name="amount" required></p>
+        <button type="submit">Withdraw</button>
+    </form>
+
+    <hr>
+
+    <h2>Accounts List</h2>
+    <table border="1">
+        <tr>
+            <th>Account ID</th>
+            <th>Member ID</th>
+            <th>Type</th>
+            <th>Balance (UGX)</th>
+            <th>Date Opened</th>
+        </tr>
+        {% for acc in accounts %}
+        <tr>
+            <td>{{ acc.account_id }}</td>
+            <td>{{ acc.member_id }}</td>
+            <td>{{ acc.account_type }}</td>
+            <td>{{ acc.balance }}</td>
+            <td>{{ acc.date_opened }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

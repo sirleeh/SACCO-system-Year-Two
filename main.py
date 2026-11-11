@@ -1,98 +1,208 @@
+from datetime import datetime
 from member import Member
-from account import Account
-from savings import Savings
+from staff import Staff
+from account import Account, SavingsAccount, FixedDepositAccount
+from savings import SavingsDeposit
 from loan import Loan
 from guarantor import Guarantor
-from staff import Staff
 from loan_payment import LoanPayment
+from storage import Storage
 
-def main():
-    while True:
-        print("\n--- SACCO SYSTEM ---")
-        print("1. Register Member")
-        print("2. Create Account")
-        print("3. Record Savings")
-        print("4. Apply for Loan")
-        print("5. Register Guarantor")
-        print("6. Approve Loan (Staff)")
-        print("7. Make Loan Payment")
-        print("8. Check Account Balance")
-        print("9. Register Staff")
-        print("0. Exit")
 
-        choice = input("Enter choice: ")
+# Helper functions to find objects in lists by their ID
+def find_member(members, member_id):
+    for member in members:
+        if member.get_member_id() == member_id:
+            return member
+    return None
 
-        if choice == "1":
-            first_name = input("First Name: ")
-            last_name = input("Last Name: ")
-            gender = input("Gender: ")
-            phone = input("Phone no: ")
-            national_id = input("National ID no: ")
-            m = Member(first_name, last_name, gender, phone, national_id)
-            m.register_member()
 
-        elif choice == "2":
-            member_id = input("Member ID: ")
-            acc = Account(member_id)
-            acc.create_account()
+def find_staff(staff_list, staff_id):
+    for staff in staff_list:
+        if staff.get_staff_id() == staff_id:
+            return staff
+    return None
 
-        elif choice == "3":
-            member_id = input("Member ID: ")
-            account_id = input("Account ID: ")
-            amount = int(input("Amount: "))
-            method = input("Payment Method: ")
-            s = Savings(member_id, account_id, amount, method)
-            s.record_savings()
 
-        elif choice == "4":
-            member_id = input("Member ID: ")
-            amount = int(input("Loan Amount: "))
-            period = input("Payment Period: ")
-            method = input("Payment Method: ")
-            purpose = input("Purpose: ")
-            guarantor_id = input("Guarantor ID: ")
-            l = Loan(member_id, amount, period, method, purpose, guarantor_id)
-            l.apply_for_loan()
+def find_account(accounts, account_id):
+    for account in accounts:
+        if account.get_account_id() == account_id:
+            return account
+    return None
 
-        elif choice == "5":
-            member_id = input("Member ID: ")
-            first_name = input("Guarantor's first name: ")
-            last_name = input("Guarantor's last name: ")
-            phone = input("Phone: ")
-            loan_id = input("Loan ID: ")
-            amount = int(input("Amount Guaranteed: "))
-            g = Guarantor(member_id, first_name, last_name, phone, amount, loan_id)
-            g.register_guarantor()
 
-        elif choice == "6":
-            loan_id = input("Loan ID: ")
-            Staff.approve_loan(loan_id)
+def find_loan(loans, loan_id):
+    for loan in loans:
+        if loan.get_loan_id() == loan_id:
+            return loan
+    return None
 
-        elif choice == "7":
-            loan_id = input("Loan ID: ")
-            amount = int(input("Amount: "))
-            method = input("Payment Method: ")
-            lp = LoanPayment(loan_id, amount, method)
-            lp.make_payment()
 
-        elif choice == "8":
-            account_id = input("Account ID: ")
-            acc = Account("")
-            acc.check_balance(account_id)
+# Load all records from JSON and create class objects
+def load_all_data(storage):
+    data = storage.load()
 
-        elif choice == "9":
-            first_name = input("First Name: ")
-            last_name = input("Last Name: ")
-            gender = input("Gender: ")
-            phone = input("Phone no: ")
-            position = input("Position: ")
-            national_id=input("national ID:")
-            st = Staff(first_name, last_name, gender, phone, position,national_id)
-            st.register_staff()
+    # Set class counters to match existing records in JSON
+    Member.count = len(data["members"])
+    Staff.count = len(data["staff"])
+    Account.count = len(data["accounts"])
+    SavingsDeposit.count = len(data["savings"])
+    Loan.count = len(data["loans"])
+    Guarantor.count = len(data["guarantors"])
+    LoanPayment.count = len(data["payments"])
 
-        elif choice == "0":
-            print("Exiting...")
-            break
+    members = []
+    staff_list = []
+    accounts = []
+    savings_list = []
+    loans = []
+    guarantors = []
+    payments = []
 
+    # Load Members
+    for row in data["members"]:
+        m = Member(
+            row["first_name"],
+            row["last_name"],
+            row["gender"],
+            row["phone"],
+            row["national_id"],
+            row["join_date"],
+            row["member_id"]
+        )
+        m.set_status(row["status"])
+        members.append(m)
+
+    # Load Staff
+    for row in data["staff"]:
+        st = Staff(
+            row["first_name"],
+            row["last_name"],
+            row["gender"],
+            row["phone"],
+            row["national_id"],
+            row["position"],
+            row["staff_id"]
+        )
+        staff_list.append(st)
+
+    # Load Accounts
+    for row in data["accounts"]:
+        member = find_member(members, row["member_id"])
+        if row["account_type"] == "Savings":
+            acc = SavingsAccount(member, row["date_opened"], row["account_id"])
+        elif row["account_type"] == "Fixed Deposit":
+            acc = FixedDepositAccount(member, row["date_opened"], row["account_id"])
+        else:
+            acc = Account(member, row["date_opened"], row["account_id"])
+
+        if row["balance"] > 0:
+            acc.deposit(row["balance"])
+        accounts.append(acc)
+
+    # Load Savings Deposits
+    for row in data["savings"]:
+        account = find_account(accounts, row["account_id"])
+        sd = SavingsDeposit(
+            account,
+            row["amount_saved"],
+            row["payment_method"],
+            row["savings_date"],
+            row["savings_id"]
+        )
+        savings_list.append(sd)
+
+    # Load Loans
+    for row in data["loans"]:
+        member = find_member(members, row["member_id"])
+        loan = Loan(
+            member,
+            row["loan_amount"],
+            row["payment_period"],
+            row["payment_method"],
+            row["loan_purpose"],
+            row["start_date"],
+            row["loan_id"]
+        )
+        loans.append(loan)
+
+    # Load Guarantors
+    for row in data["guarantors"]:
+        member = find_member(members, row["member_id"])
+        loan = find_loan(loans, row["loan_id"])
+        g = Guarantor(
+            member,
+            loan,
+            row["amount_guaranteed"],
+            row["guarantor_id"]
+        )
+        loan.add_guarantor(g)
+        guarantors.append(g)
+
+    # Restore Loan approval or rejection status
+    for row in data["loans"]:
+        loan = find_loan(loans, row["loan_id"])
+        staff = find_staff(staff_list, row["approved_by"])
+        if row["status"] == "Approved" or row["status"] == "Cleared":
+            loan.approve(staff)
+        elif row["status"] == "Rejected":
+            loan.reject(staff)
+
+    # Load Loan Payments
+    for row in data["payments"]:
+        loan = find_loan(loans, row["loan_id"])
+        lp = LoanPayment(
+            loan,
+            row["amount_paid"],
+            row["payment_method"],
+            row["payment_date"],
+            row["payment_id"]
+        )
+        lp.make_payment()
+        payments.append(lp)
+
+    return members, staff_list, accounts, savings_list, loans, guarantors, payments
+
+
+# Convert a list of objects into a list of dictionaries
+def to_dict_list(object_list):
+    records = []
+    for obj in object_list:
+        records.append(obj.to_dict())
+    return records
+
+
+# Save all object lists to the JSON file
+def save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments):
+    data = {
+        "members": to_dict_list(members),
+        "staff": to_dict_list(staff_list),
+        "accounts": to_dict_list(accounts),
+        "savings": to_dict_list(savings_list),
+        "loans": to_dict_list(loans),
+        "guarantors": to_dict_list(guarantors),
+        "payments": to_dict_list(payments)
+    }
+    storage.save(data)
+
+
+# Display records in the terminal when main.py is run directly
 if __name__ == "__main__":
-    main()
+    storage = Storage("sacco_data.json")
+    members, staff_list, accounts, savings_list, loans, guarantors, payments = load_all_data(storage)
+
+    print("--- MEMBERS ---")
+    for member in members:
+        print(member)
+
+    print("\n--- STAFF ---")
+    for staff in staff_list:
+        print(staff)
+
+    print("\n--- ACCOUNTS ---")
+    for account in accounts:
+        print(account)
+
+    print("\n--- LOANS ---")
+    for loan in loans:
+        print(loan)

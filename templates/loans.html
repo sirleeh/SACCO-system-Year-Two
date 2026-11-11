@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SACCO System - Loans</title>
+</head>
+<body>
+    <h1>SACCO Management System</h1>
+    <p>
+        <a href="/">Home</a> |
+        <a href="/members">Members</a> |
+        <a href="/staff">Staff</a> |
+        <a href="/accounts">Accounts</a> |
+        <a href="/savings">Savings</a> |
+        <a href="/loans">Loans</a> |
+        <a href="/guarantors">Guarantors</a> |
+        <a href="/payments">Payments</a>
+    </p>
+    <hr>
+
+    <h2>Apply for Loan</h2>
+    <form method="POST" action="/loans">
+        <input type="hidden" name="action" value="apply">
+        <p>Member:
+            <select name="member_id" required>
+                <option value="">Choose a Member</option>
+                {% for m in members %}
+                    <option value="{{ m.member_id }}">{{ m.member_id }} - {{ m.first_name }} {{ m.last_name }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Amount (UGX): <input type="number" name="loan_amount" required></p>
+        <p>Period: <input type="text" name="payment_period" required></p>
+        <p>Method:
+            <select name="payment_method" required>
+                <option value="">Choose Payment Method</option>
+                <option value="Cash">Cash</option>
+                <option value="Mobile Money">Mobile Money</option>
+                <option value="Bank">Bank</option>
+            </select>
+        </p>
+        <p>Purpose: <input type="text" name="loan_purpose" required></p>
+        <button type="submit">Apply</button>
+    </form>
+
+    <hr>
+
+    <h2>Approve or Reject Loan</h2>
+    <form method="POST" action="/loans">
+        <input type="hidden" name="action" value="decision">
+        <p>Loan:
+            <select name="loan_id" required>
+                <option value="">Choose a Loan</option>
+                {% for l in loans %}
+                    <option value="{{ l.loan_id }}">{{ l.loan_id }} (UGX {{ l.loan_amount }} - {{ l.status }})</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Staff:
+            <select name="staff_id" required>
+                <option value="">Choose a Staff</option>
+                {% for st in staff_list %}
+                    <option value="{{ st.staff_id }}">{{ st.staff_id }} - {{ st.first_name }} {{ st.last_name }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Decision:
+            <select name="decision" required>
+                <option value="">Choose Decision</option>
+                <option value="Approve">Approve</option>
+                <option value="Reject">Reject</option>
+            </select>
+        </p>
+        <button type="submit">Submit</button>
+    </form>
+
+    <hr>
+
+    <h2>Loans List</h2>
+    <table border="1">
+        <tr>
+            <th>Loan ID</th>
+            <th>Member ID</th>
+            <th>Amount (UGX)</th>
+            <th>Balance (UGX)</th>
+            <th>Period</th>
+            <th>Method</th>
+            <th>Purpose</th>
+            <th>Start Date</th>
+            <th>Status</th>
+            <th>Approved By</th>
+        </tr>
+        {% for l in loans %}
+        <tr>
+            <td>{{ l.loan_id }}</td>
+            <td>{{ l.member_id }}</td>
+            <td>{{ l.loan_amount }}</td>
+            <td>{{ l.current_balance }}</td>
+            <td>{{ l.payment_period }}</td>
+            <td>{{ l.payment_method }}</td>
+            <td>{{ l.loan_purpose }}</td>
+            <td>{{ l.start_date }}</td>
+            <td>{{ l.status }}</td>
+            <td>{{ l.approved_by }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

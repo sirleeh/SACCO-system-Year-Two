@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SACCO System - Guarantors</title>
+</head>
+<body>
+    <h1>SACCO Management System</h1>
+    <p>
+        <a href="/">Home</a> |
+        <a href="/members">Members</a> |
+        <a href="/staff">Staff</a> |
+        <a href="/accounts">Accounts</a> |
+        <a href="/savings">Savings</a> |
+        <a href="/loans">Loans</a> |
+        <a href="/guarantors">Guarantors</a> |
+        <a href="/payments">Payments</a>
+    </p>
+    <hr>
+
+    <h2>Add Guarantor</h2>
+    <form method="POST" action="/guarantors">
+        <p>Loan:
+            <select name="loan_id" required>
+                <option value="">Choose a Loan</option>
+                {% for l in loans %}
+                    <option value="{{ l.loan_id }}">{{ l.loan_id }} (Borrower: {{ l.member_id }})</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Guarantor Member:
+            <select name="member_id" required>
+                <option value="">Choose a Member</option>
+                {% for m in members %}
+                    <option value="{{ m.member_id }}">{{ m.member_id }} - {{ m.first_name }} {{ m.last_name }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Amount Guaranteed (UGX): <input type="number" name="amount_guaranteed" required></p>
+        <button type="submit">Add Guarantor</button>
+    </form>
+
+    <hr>
+
+    <h2>Guarantors List</h2>
+    <table border="1">
+        <tr>
+            <th>Guarantor ID</th>
+            <th>Member ID</th>
+            <th>Loan ID</th>
+            <th>Amount Guaranteed (UGX)</th>
+        </tr>
+        {% for g in guarantors %}
+        <tr>
+            <td>{{ g.guarantor_id }}</td>
+            <td>{{ g.member_id }}</td>
+            <td>{{ g.loan_id }}</td>
+            <td>{{ g.amount_guaranteed }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

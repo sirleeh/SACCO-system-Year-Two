@@ -1,68 +1,157 @@
-import json
-from datetime import datetime
-
+# Composite class representing a SACCO Loan
 class Loan:
-    loan_count = 0
 
+    count = 0
+
+    # Class method for auto-incrementing Loan ID
     @classmethod
-    def generate_loan_id(cls):
-        cls.loan_count += 1
-        return f"L{cls.loan_count:03d}"
+    def generate_id(cls):
+        cls.count += 1
+        return f"L{cls.count:03d}"
 
-    def __init__(self, member_id, loan_amount, payment_period, payment_method, loan_purpose, guarantor_id=""):
-        Loan.loan_count += 1
-        self.__loan_id =self.generate_loan_id()
-        self.__member_id = member_id
+    def __init__(self, member, loan_amount, payment_period, payment_method, loan_purpose, start_date, loan_id=None):
+        if loan_id is None:
+            self.__loan_id = Loan.generate_id()
+        else:
+            self.__loan_id = loan_id
+        self.member = member  # Composition: Loan has a Member (borrower)
         self.__loan_amount = loan_amount
         self.__current_balance = loan_amount
-        self.__payment_period = payment_period
-        self.__start_date = datetime.now().strftime("%Y-%m-%d")
-        self.__status = "Pending"
+        self.payment_period = payment_period
         self.payment_method = payment_method
         self.loan_purpose = loan_purpose
-        self.guarantor_id = guarantor_id
+        self.__start_date = start_date
+        self.__status = "Pending"
+        self.approved_by = None
+        self.guarantors = []  # List of Guarantor objects
+        self.payments = []    # List of LoanPayment objects
+        self.max_guarantors = 3
 
-    # Getters
+    # Getter methods
     def get_loan_id(self):
         return self.__loan_id
-    
-    def get_member_id(self):
-        return self.__member_id
-    
+
     def get_loan_amount(self):
         return self.__loan_amount
-    
+
     def get_current_balance(self):
         return self.__current_balance
-    
-    def get_payment_period(self):
-        return self.__payment_period
-    
+
     def get_start_date(self):
         return self.__start_date
-    
+
     def get_status(self):
         return self.__status
 
-    # Methods
-    def apply_for_loan(self):
-        with open("loans.json", "r") as f:
-            loans = json.load(f)
+    # Calculate total amount guaranteed using a loop
+    def get_total_guaranteed(self):
+        total = 0
+        for guarantor in self.guarantors:
+            total += guarantor.get_amount_guaranteed()
+        return total
 
-        loans.append({
+    # Calculate total amount paid using a loop
+    def get_total_paid(self):
+        total = 0
+        for payment in self.payments:
+            total += payment.get_amount_paid()
+        return total
+
+    # Add a guarantor to the loan (maximum 3 guarantors)
+    def add_guarantor(self, guarantor):
+        if self.__status != "Pending":
+            print(f"Guarantors can only be added to a Pending loan. Loan {self.__loan_id} is {self.__status}")
+            return False
+        elif guarantor.member == self.member:
+            print("A member cannot guarantee their own loan")
+            return False
+        elif len(self.guarantors) >= self.max_guarantors:
+            print(f"Loan {self.__loan_id} already has {self.max_guarantors} guarantors")
+            return False
+        else:
+            self.guarantors.append(guarantor)
+            return True
+
+    # Approve the loan if it is Pending and has at least one guarantor
+    def approve(self, staff):
+        if self.__status != "Pending":
+            print(f"Loan {self.__loan_id} is already {self.__status}")
+            return False
+        elif len(self.guarantors) == 0:
+            print(f"Loan {self.__loan_id} needs at least one guarantor before approval")
+            return False
+        else:
+            self.__status = "Approved"
+            self.approved_by = staff
+            return True
+
+    # Reject a pending loan
+    def reject(self, staff):
+        if self.__status != "Pending":
+            print(f"Loan {self.__loan_id} is already {self.__status}")
+            return False
+        else:
+            self.__status = "Rejected"
+            self.approved_by = staff
+            return True
+
+    # Record a loan repayment and reduce the current balance
+    def receive_payment(self, payment):
+        amount = payment.get_amount_paid()
+        if self.__status != "Approved":
+            print(f"Payments can only be made on an Approved loan. Loan {self.__loan_id} is {self.__status}")
+            return False
+        elif amount <= 0:
+            print("Payment amount must be greater than zero")
+            return False
+        elif amount > self.__current_balance:
+            print(f"Amount is more than the remaining balance of UGX {self.__current_balance}")
+            return False
+        else:
+            self.__current_balance -= amount
+            self.payments.append(payment)
+            if self.__current_balance == 0:
+                self.__status = "Cleared"
+            return True
+
+    def display_details(self):
+        details = (f"---- Loan {self.__loan_id} ----\n"
+                   f"Borrower:\t{self.member.get_member_id()} {self.member.get_full_name()}\n"
+                   f"Amount:\t\tUGX {self.__loan_amount}\n"
+                   f"Balance:\tUGX {self.__current_balance}\n"
+                   f"Period:\t\t{self.payment_period}\n"
+                   f"Purpose:\t{self.loan_purpose}\n"
+                   f"Start date:\t{self.__start_date}\n"
+                   f"Status:\t\t{self.__status}\n")
+        if self.approved_by != None:
+            details += f"Handled by:\t{self.approved_by.get_full_name()}\n"
+        details += "Guarantors:\n"
+        for guarantor in self.guarantors:
+            details += f"  - {guarantor}\n"
+        details += "Payments:\n"
+        for payment in self.payments:
+            details += f"  - {payment}\n"
+        return details
+
+    def __str__(self):
+        return (f"{self.__loan_id}\t{self.member.get_full_name()}\t"
+                f"UGX {self.__loan_amount}\tBalance UGX {self.__current_balance}\t{self.__status}")
+
+    # Convert object to dictionary for JSON storage
+    def to_dict(self):
+        if self.approved_by != None:
+            staff_id = self.approved_by.get_staff_id()
+        else:
+            staff_id = ""
+        return {
             "loan_id": self.__loan_id,
-            "member_id": self.__member_id,
+            "member_id": self.member.get_member_id(),
             "loan_amount": self.__loan_amount,
             "current_balance": self.__current_balance,
-            "payment_period": self.__payment_period,
+            "payment_period": self.payment_period,
             "payment_method": self.payment_method,
             "loan_purpose": self.loan_purpose,
-            "guarantor_id": self.guarantor_id,
             "start_date": self.__start_date,
-            "status": self.__status
-        })
-
-        with open("loans.json", "w") as f:
-            json.dump(loans, f, indent=4)
-
-        print(f"Loan application [{self.__loan_id}] saved!")
+            "status": self.__status,
+            "approved_by": staff_id
+        }

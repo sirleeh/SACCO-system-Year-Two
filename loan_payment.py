@@ -1,70 +1,47 @@
-import json
-from datetime import datetime
-
+# Class to represent a loan repayment transaction
 class LoanPayment:
-    loanpayment_count = 0
 
+    count = 0
+
+    # Class method for auto-incrementing Payment ID
     @classmethod
-    def generate_loanpayment_id(cls):
-        cls.loanpayment_count += 1
-        return f"P{cls.loanpayment_count:03d}"
+    def generate_id(cls):
+        cls.count += 1
+        return f"P{cls.count:03d}"
 
-    def __init__(self, loan_id, amount_paid, payment_method):
-        LoanPayment.loanpayment_count += 1
-        self.__loanpayment_id = self.generate_loanpayment_id()
-        self.__loan_id = loan_id
+    def __init__(self, loan, amount_paid, payment_method, payment_date, payment_id=None):
+        if payment_id is None:
+            self.__payment_id = LoanPayment.generate_id()
+        else:
+            self.__payment_id = payment_id
+        self.loan = loan  # Composition: LoanPayment has a Loan object
         self.__amount_paid = amount_paid
-        self.__payment_date = datetime.now().strftime("%Y-%m-%d")
         self.payment_method = payment_method
+        self.__payment_date = payment_date
 
-    # Getters
-    def get_loanpayment_id(self):
-        return self.__loanpayment_id
-    
-    def get_loan_id(self):
-        return self.__loan_id
+    # Getter methods
+    def get_payment_id(self):
+        return self.__payment_id
 
     def get_amount_paid(self):
         return self.__amount_paid
-    
+
     def get_payment_date(self):
         return self.__payment_date
-    
-    def get_payment_method(self):
-        return self.payment_method
 
-    # Methods
+    # Delegation: call the loan's receive_payment method
     def make_payment(self):
-        with open("loans.json", "r") as f:
-            loans = json.load(f)
+        return self.loan.receive_payment(self)
 
-        remaining = 0
-        for loan in loans:
-            if loan["loan_id"] == self.__loan_id:
-                loan["current_balance"] -= self.__amount_paid
-                if loan["current_balance"] <= 0:
-                    loan["current_balance"] = 0
-                    loan["status"] = "Cleared"
-                remaining = loan["current_balance"]
-                break
+    def __str__(self):
+        return f"{self.__payment_id}\t{self.__payment_date}\tUGX {self.__amount_paid}\t{self.payment_method}"
 
-        with open("loans.json", "w") as f:
-            json.dump(loans, f, indent=4)
-
-        # Append to payments.json
-        with open("payments.json", "r") as f:
-            payments = json.load(f)
-
-        payments.append({
-            "payment_id": self.__loanpayment_id,
-            "loan_id": self.__loan_id,
+    # Convert object to dictionary for JSON storage
+    def to_dict(self):
+        return {
+            "payment_id": self.__payment_id,
+            "loan_id": self.loan.get_loan_id(),
             "amount_paid": self.__amount_paid,
             "payment_method": self.payment_method,
-            "payment_date": self.__payment_date,
-            "remaining_balance": remaining
-        })
-
-        with open("payments.json", "w") as f:
-            json.dump(payments, f, indent=4)
-
-        print(f"Paid: UGX {self.__amount_paid} | Remaining: UGX {remaining}")
+            "payment_date": self.__payment_date
+        }

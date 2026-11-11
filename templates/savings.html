@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SACCO System - Savings</title>
+</head>
+<body>
+    <h1>SACCO Management System</h1>
+    <p>
+        <a href="/">Home</a> |
+        <a href="/members">Members</a> |
+        <a href="/staff">Staff</a> |
+        <a href="/accounts">Accounts</a> |
+        <a href="/savings">Savings</a> |
+        <a href="/loans">Loans</a> |
+        <a href="/guarantors">Guarantors</a> |
+        <a href="/payments">Payments</a>
+    </p>
+    <hr>
+
+    <h2>Record Savings Deposit</h2>
+    <form method="POST" action="/savings">
+        <p>Account:
+            <select name="account_id" required>
+                <option value="">Choose an Account</option>
+                {% for acc in accounts %}
+                    <option value="{{ acc.account_id }}">{{ acc.account_id }} (Member {{ acc.member_id }})</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Amount (UGX): <input type="number" name="amount_saved" required></p>
+        <p>Payment Method:
+            <select name="payment_method" required>
+                <option value="">Choose Payment Method</option>
+                <option value="Cash">Cash</option>
+                <option value="Mobile Money">Mobile Money</option>
+                <option value="Bank">Bank</option>
+            </select>
+        </p>
+        <button type="submit">Save</button>
+    </form>
+
+    <hr>
+
+    <h2>Savings List</h2>
+    <table border="1">
+        <tr>
+            <th>Savings ID</th>
+            <th>Member ID</th>
+            <th>Account ID</th>
+            <th>Amount (UGX)</th>
+            <th>Method</th>
+            <th>Date</th>
+        </tr>
+        {% for s in savings_list %}
+        <tr>
+            <td>{{ s.savings_id }}</td>
+            <td>{{ s.member_id }}</td>
+            <td>{{ s.account_id }}</td>
+            <td>{{ s.amount_saved }}</td>
+            <td>{{ s.payment_method }}</td>
+            <td>{{ s.savings_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

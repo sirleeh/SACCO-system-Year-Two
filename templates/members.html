@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SACCO System - Members</title>
+</head>
+<body>
+    <h1>SACCO Management System</h1>
+    <p>
+        <a href="/">Home</a> |
+        <a href="/members">Members</a> |
+        <a href="/staff">Staff</a> |
+        <a href="/accounts">Accounts</a> |
+        <a href="/savings">Savings</a> |
+        <a href="/loans">Loans</a> |
+        <a href="/guarantors">Guarantors</a> |
+        <a href="/payments">Payments</a>
+    </p>
+    <hr>
+
+    <h2>Register Member</h2>
+    <form method="POST" action="/members">
+        <p>First Name: <input type="text" name="first_name" required></p>
+        <p>Last Name: <input type="text" name="last_name" required></p>
+        <p>Gender:
+            <select name="gender" required>
+                <option value="">Choose Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </p>
+        <p>Phone: <input type="text" name="phone" required></p>
+        <p>National ID: <input type="text" name="national_id" required></p>
+        <p>Status:
+            <select name="status" required>
+                <option value="">Choose Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+        </p>
+        <button type="submit">Register</button>
+    </form>
+
+    <hr>
+
+    <h2>Members List</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>National ID</th>
+            <th>Join Date</th>
+            <th>Status</th>
+        </tr>
+        {% for m in members %}
+        <tr>
+            <td>{{ m.member_id }}</td>
+            <td>{{ m.first_name }}</td>
+            <td>{{ m.last_name }}</td>
+            <td>{{ m.gender }}</td>
+            <td>{{ m.phone }}</td>
+            <td>{{ m.national_id }}</td>
+            <td>{{ m.join_date }}</td>
+            <td>{{ m.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
