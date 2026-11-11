@@ -1,4 +1,3 @@
-from datetime import datetime
 from member import Member
 from staff import Staff
 from account import Account, SavingsAccount, FixedDepositAccount
@@ -91,10 +90,8 @@ def load_all_data(storage):
         member = find_member(members, row["member_id"])
         if row["account_type"] == "Savings":
             acc = SavingsAccount(member, row["date_opened"], row["account_id"])
-        elif row["account_type"] == "Fixed Deposit":
-            acc = FixedDepositAccount(member, row["date_opened"], row["account_id"])
         else:
-            acc = Account(member, row["date_opened"], row["account_id"])
+            acc = FixedDepositAccount(member, row["date_opened"], row["account_id"])
 
         if row["balance"] > 0:
             acc.deposit(row["balance"])

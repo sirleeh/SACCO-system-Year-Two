@@ -23,7 +23,7 @@
             <select name="account_id" required>
                 <option value="">Choose an Account</option>
                 {% for acc in accounts %}
-                    <option value="{{ acc.account_id }}">{{ acc.account_id }} (Member {{ acc.member_id }})</option>
+                    <option value="{{ acc.get_account_id() }}">{{ acc.member.get_member_id() }} - {{ acc.member.get_full_name() }} - {{ acc.get_account_id() }}</option>
                 {% endfor %}
             </select>
         </p>
@@ -46,6 +46,7 @@
         <tr>
             <th>Savings ID</th>
             <th>Member ID</th>
+            <th>Member Name</th>
             <th>Account ID</th>
             <th>Amount (UGX)</th>
             <th>Method</th>
@@ -53,12 +54,13 @@
         </tr>
         {% for s in savings_list %}
         <tr>
-            <td>{{ s.savings_id }}</td>
-            <td>{{ s.member_id }}</td>
-            <td>{{ s.account_id }}</td>
-            <td>{{ s.amount_saved }}</td>
+            <td>{{ s.get_savings_id() }}</td>
+            <td>{{ s.account.member.get_member_id() }}</td>
+            <td>{{ s.account.member.get_full_name() }}</td>
+            <td>{{ s.account.get_account_id() }}</td>
+            <td>{{ s.get_amount_saved() }}</td>
             <td>{{ s.payment_method }}</td>
-            <td>{{ s.savings_date }}</td>
+            <td>{{ s.get_savings_date() }}</td>
         </tr>
         {% endfor %}
     </table>

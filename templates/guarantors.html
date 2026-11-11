@@ -23,7 +23,7 @@
             <select name="loan_id" required>
                 <option value="">Choose a Loan</option>
                 {% for l in loans %}
-                    <option value="{{ l.loan_id }}">{{ l.loan_id }} (Borrower: {{ l.member_id }})</option>
+                    <option value="{{ l.get_loan_id() }}">{{ l.member.get_member_id() }} - {{ l.member.get_full_name() }} - {{ l.get_loan_id() }} (UGX {{ l.get_loan_amount() }})</option>
                 {% endfor %}
             </select>
         </p>
@@ -31,7 +31,7 @@
             <select name="member_id" required>
                 <option value="">Choose a Member</option>
                 {% for m in members %}
-                    <option value="{{ m.member_id }}">{{ m.member_id }} - {{ m.first_name }} {{ m.last_name }}</option>
+                    <option value="{{ m.get_member_id() }}">{{ m.get_member_id() }} - {{ m.get_full_name() }}</option>
                 {% endfor %}
             </select>
         </p>
@@ -45,16 +45,20 @@
     <table border="1">
         <tr>
             <th>Guarantor ID</th>
-            <th>Member ID</th>
+            <th>Guarantor Member ID</th>
+            <th>Guarantor Name</th>
             <th>Loan ID</th>
+            <th>Borrower Name</th>
             <th>Amount Guaranteed (UGX)</th>
         </tr>
         {% for g in guarantors %}
         <tr>
-            <td>{{ g.guarantor_id }}</td>
-            <td>{{ g.member_id }}</td>
-            <td>{{ g.loan_id }}</td>
-            <td>{{ g.amount_guaranteed }}</td>
+            <td>{{ g.get_guarantor_id() }}</td>
+            <td>{{ g.get_member_id() }}</td>
+            <td>{{ g.get_full_name() }}</td>
+            <td>{{ g.loan.get_loan_id() }}</td>
+            <td>{{ g.loan.member.get_full_name() }}</td>
+            <td>{{ g.get_amount_guaranteed() }}</td>
         </tr>
         {% endfor %}
     </table>

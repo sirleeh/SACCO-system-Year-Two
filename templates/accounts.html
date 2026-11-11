@@ -24,7 +24,7 @@
             <select name="member_id" required>
                 <option value="">Choose a Member</option>
                 {% for m in members %}
-                    <option value="{{ m.member_id }}">{{ m.member_id }} - {{ m.first_name }} {{ m.last_name }}</option>
+                    <option value="{{ m.get_member_id() }}">{{ m.get_member_id() }} - {{ m.get_full_name() }}</option>
                 {% endfor %}
             </select>
         </p>
@@ -47,7 +47,7 @@
             <select name="account_id" required>
                 <option value="">Choose an Account</option>
                 {% for acc in accounts %}
-                    <option value="{{ acc.account_id }}">{{ acc.account_id }} ({{ acc.account_type }} - UGX {{ acc.balance }})</option>
+                    <option value="{{ acc.get_account_id() }}">{{ acc.member.get_member_id() }} - {{ acc.member.get_full_name() }} - {{ acc.get_account_id() }} ({{ acc.account_type }} - UGX {{ acc.balance }})</option>
                 {% endfor %}
             </select>
         </p>
@@ -62,14 +62,16 @@
         <tr>
             <th>Account ID</th>
             <th>Member ID</th>
+            <th>Member Name</th>
             <th>Type</th>
             <th>Balance (UGX)</th>
             <th>Date Opened</th>
         </tr>
         {% for acc in accounts %}
         <tr>
-            <td>{{ acc.account_id }}</td>
-            <td>{{ acc.member_id }}</td>
+            <td>{{ acc.get_account_id() }}</td>
+            <td>{{ acc.member.get_member_id() }}</td>
+            <td>{{ acc.member.get_full_name() }}</td>
             <td>{{ acc.account_type }}</td>
             <td>{{ acc.balance }}</td>
             <td>{{ acc.date_opened }}</td>

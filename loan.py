@@ -43,20 +43,6 @@ class Loan:
     def get_status(self):
         return self.__status
 
-    # Calculate total amount guaranteed using a loop
-    def get_total_guaranteed(self):
-        total = 0
-        for guarantor in self.guarantors:
-            total += guarantor.get_amount_guaranteed()
-        return total
-
-    # Calculate total amount paid using a loop
-    def get_total_paid(self):
-        total = 0
-        for payment in self.payments:
-            total += payment.get_amount_paid()
-        return total
-
     # Add a guarantor to the loan (maximum 3 guarantors)
     def add_guarantor(self, guarantor):
         if self.__status != "Pending":
@@ -113,25 +99,6 @@ class Loan:
             if self.__current_balance == 0:
                 self.__status = "Cleared"
             return True
-
-    def display_details(self):
-        details = (f"---- Loan {self.__loan_id} ----\n"
-                   f"Borrower:\t{self.member.get_member_id()} {self.member.get_full_name()}\n"
-                   f"Amount:\t\tUGX {self.__loan_amount}\n"
-                   f"Balance:\tUGX {self.__current_balance}\n"
-                   f"Period:\t\t{self.payment_period}\n"
-                   f"Purpose:\t{self.loan_purpose}\n"
-                   f"Start date:\t{self.__start_date}\n"
-                   f"Status:\t\t{self.__status}\n")
-        if self.approved_by != None:
-            details += f"Handled by:\t{self.approved_by.get_full_name()}\n"
-        details += "Guarantors:\n"
-        for guarantor in self.guarantors:
-            details += f"  - {guarantor}\n"
-        details += "Payments:\n"
-        for payment in self.payments:
-            details += f"  - {payment}\n"
-        return details
 
     def __str__(self):
         return (f"{self.__loan_id}\t{self.member.get_full_name()}\t"

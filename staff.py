@@ -31,13 +31,6 @@ class Staff(Person):
         return loan.reject(self)
 
     # Method overriding (Polymorphism)
-    def display_details(self):
-        person_details = super().display_details()
-        return (f"---- Staff Details ----\n"
-                f"Staff ID:\t{self.__staff_id}\n"
-                f"{person_details}\n"
-                f"Position:\t{self.position}")
-
     def __str__(self):
         return f"{self.__staff_id}\t{self.get_full_name()}\t{self.position}"
 

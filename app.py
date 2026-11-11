@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Flask, render_template, request
 from member import Member
 from staff import Staff
-from account import Account, SavingsAccount, FixedDepositAccount
+from account import SavingsAccount, FixedDepositAccount
 from savings import SavingsDeposit
 from loan import Loan
 from guarantor import Guarantor
@@ -25,8 +25,7 @@ storage = Storage("sacco_data.json")
 # Home page route
 @app.route("/")
 def index():
-    data = storage.load()
-    return render_template("index.html", data=data)
+    return render_template("index.html")
 
 
 # Route to register and view SACCO members
@@ -50,8 +49,7 @@ def members_page():
         members.append(m)
         save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
-    data = storage.load()
-    return render_template("members.html", members=data["members"])
+    return render_template("members.html", members=members)
 
 
 # Route to register and view staff members
@@ -73,8 +71,7 @@ def staff_page():
         staff_list.append(st)
         save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
-    data = storage.load()
-    return render_template("staff.html", staff_list=data["staff"])
+    return render_template("staff.html", staff_list=staff_list)
 
 
 # Route to create accounts and make withdrawals
@@ -108,8 +105,7 @@ def accounts_page():
             account.withdraw(amount)
             save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
-    data = storage.load()
-    return render_template("accounts.html", accounts=data["accounts"], members=data["members"])
+    return render_template("accounts.html", accounts=accounts, members=members)
 
 
 # Route to record savings deposits
@@ -130,8 +126,7 @@ def savings_page():
             savings_list.append(sd)
             save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
-    data = storage.load()
-    return render_template("savings.html", savings_list=data["savings"], accounts=data["accounts"])
+    return render_template("savings.html", savings_list=savings_list, accounts=accounts)
 
 
 # Route to apply for loans and approve or reject loans
@@ -171,8 +166,7 @@ def loans_page():
                 staff.reject_loan(loan)
             save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
-    data = storage.load()
-    return render_template("loans.html", loans=data["loans"], members=data["members"], staff_list=data["staff"])
+    return render_template("loans.html", loans=loans, members=members, staff_list=staff_list)
 
 
 # Route to add guarantors to a loan
@@ -194,8 +188,7 @@ def guarantors_page():
             guarantors.append(g)
             save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
-    data = storage.load()
-    return render_template("guarantors.html", guarantors=data["guarantors"], loans=data["loans"], members=data["members"])
+    return render_template("guarantors.html", guarantors=guarantors, loans=loans, members=members)
 
 
 # Route to record loan repayments
@@ -216,9 +209,8 @@ def payments_page():
             payments.append(lp)
             save_all_data(storage, members, staff_list, accounts, savings_list, loans, guarantors, payments)
 
-    data = storage.load()
-    return render_template("payments.html", payments=data["payments"], loans=data["loans"])
+    return render_template("payments.html", payments=payments, loans=loans)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5000)

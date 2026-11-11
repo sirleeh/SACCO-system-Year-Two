@@ -23,7 +23,7 @@
             <select name="loan_id" required>
                 <option value="">Choose a Loan</option>
                 {% for l in loans %}
-                    <option value="{{ l.loan_id }}">{{ l.loan_id }} (Balance: UGX {{ l.current_balance }})</option>
+                    <option value="{{ l.get_loan_id() }}">{{ l.member.get_member_id() }} - {{ l.member.get_full_name() }} - {{ l.get_loan_id() }} (Balance: UGX {{ l.get_current_balance() }})</option>
                 {% endfor %}
             </select>
         </p>
@@ -45,6 +45,8 @@
     <table border="1">
         <tr>
             <th>Payment ID</th>
+            <th>Member ID</th>
+            <th>Member Name</th>
             <th>Loan ID</th>
             <th>Amount Paid (UGX)</th>
             <th>Method</th>
@@ -52,11 +54,13 @@
         </tr>
         {% for p in payments %}
         <tr>
-            <td>{{ p.payment_id }}</td>
-            <td>{{ p.loan_id }}</td>
-            <td>{{ p.amount_paid }}</td>
+            <td>{{ p.get_payment_id() }}</td>
+            <td>{{ p.loan.member.get_member_id() }}</td>
+            <td>{{ p.loan.member.get_full_name() }}</td>
+            <td>{{ p.loan.get_loan_id() }}</td>
+            <td>{{ p.get_amount_paid() }}</td>
             <td>{{ p.payment_method }}</td>
-            <td>{{ p.payment_date }}</td>
+            <td>{{ p.get_payment_date() }}</td>
         </tr>
         {% endfor %}
     </table>

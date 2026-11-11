@@ -38,24 +38,7 @@ class Guarantor(Member):
     def get_amount_guaranteed(self):
         return self.__amount_guaranteed
 
-    # Setter method with validation
-    def set_amount_guaranteed(self, amount_guaranteed):
-        if amount_guaranteed > 0:
-            self.__amount_guaranteed = amount_guaranteed
-            return True
-        else:
-            print("Amount guaranteed must be greater than zero")
-            return False
-
     # Method overriding (Polymorphism)
-    def display_details(self):
-        member_details = super().display_details()
-        return (f"---- Guarantor Details ----\n"
-                f"Guarantor ID:\t{self.__guarantor_id}\n"
-                f"Loan ID:\t\t{self.loan.get_loan_id()}\n"
-                f"Amount guaranteed:\tUGX {self.__amount_guaranteed}\n"
-                f"{member_details}")
-
     def __str__(self):
         return (f"{self.__guarantor_id}\t{self.get_member_id()}\t"
                 f"{self.get_full_name()}\tUGX {self.__amount_guaranteed}")

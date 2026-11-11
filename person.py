@@ -29,12 +29,5 @@ class Person:
             print("Phone number must be 10 digits")
             return False
 
-    # Method to be overridden by child classes (Polymorphism)
-    def display_details(self):
-        return (f"Names:\t\t{self.get_full_name()}\n"
-                f"Gender:\t\t{self._gender}\n"
-                f"Phone:\t\t{self.__phone}\n"
-                f"National ID:\t{self.__national_id}")
-
     def __str__(self):
         return f"{self.get_full_name()}\t{self.__phone}"

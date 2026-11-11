@@ -40,18 +40,7 @@ class Member(Person):
             print("Status must be Active or Inactive")
             return False
 
-    def is_active(self):
-        return self.__status == "Active"
-
     # Method overriding (Polymorphism)
-    def display_details(self):
-        person_details = super().display_details()
-        return (f"---- Member Details ----\n"
-                f"Member ID:\t{self.__member_id}\n"
-                f"{person_details}\n"
-                f"Date joined:\t{self.__join_date}\n"
-                f"Status:\t\t{self.__status}")
-
     def __str__(self):
         return f"{self.__member_id}\t{self.get_full_name()}\t{self.get_phone()}\t{self.__status}"
 

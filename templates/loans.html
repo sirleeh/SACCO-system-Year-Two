@@ -24,7 +24,7 @@
             <select name="member_id" required>
                 <option value="">Choose a Member</option>
                 {% for m in members %}
-                    <option value="{{ m.member_id }}">{{ m.member_id }} - {{ m.first_name }} {{ m.last_name }}</option>
+                    <option value="{{ m.get_member_id() }}">{{ m.get_member_id() }} - {{ m.get_full_name() }}</option>
                 {% endfor %}
             </select>
         </p>
@@ -51,7 +51,7 @@
             <select name="loan_id" required>
                 <option value="">Choose a Loan</option>
                 {% for l in loans %}
-                    <option value="{{ l.loan_id }}">{{ l.loan_id }} (UGX {{ l.loan_amount }} - {{ l.status }})</option>
+                    <option value="{{ l.get_loan_id() }}">{{ l.member.get_member_id() }} - {{ l.member.get_full_name() }} - {{ l.get_loan_id() }} (UGX {{ l.get_loan_amount() }} - {{ l.get_status() }})</option>
                 {% endfor %}
             </select>
         </p>
@@ -59,7 +59,7 @@
             <select name="staff_id" required>
                 <option value="">Choose a Staff</option>
                 {% for st in staff_list %}
-                    <option value="{{ st.staff_id }}">{{ st.staff_id }} - {{ st.first_name }} {{ st.last_name }}</option>
+                    <option value="{{ st.get_staff_id() }}">{{ st.get_staff_id() }} - {{ st.get_full_name() }} ({{ st.position }})</option>
                 {% endfor %}
             </select>
         </p>
@@ -80,6 +80,7 @@
         <tr>
             <th>Loan ID</th>
             <th>Member ID</th>
+            <th>Member Name</th>
             <th>Amount (UGX)</th>
             <th>Balance (UGX)</th>
             <th>Period</th>
@@ -91,16 +92,17 @@
         </tr>
         {% for l in loans %}
         <tr>
-            <td>{{ l.loan_id }}</td>
-            <td>{{ l.member_id }}</td>
-            <td>{{ l.loan_amount }}</td>
-            <td>{{ l.current_balance }}</td>
+            <td>{{ l.get_loan_id() }}</td>
+            <td>{{ l.member.get_member_id() }}</td>
+            <td>{{ l.member.get_full_name() }}</td>
+            <td>{{ l.get_loan_amount() }}</td>
+            <td>{{ l.get_current_balance() }}</td>
             <td>{{ l.payment_period }}</td>
             <td>{{ l.payment_method }}</td>
             <td>{{ l.loan_purpose }}</td>
-            <td>{{ l.start_date }}</td>
-            <td>{{ l.status }}</td>
-            <td>{{ l.approved_by }}</td>
+            <td>{{ l.get_start_date() }}</td>
+            <td>{{ l.get_status() }}</td>
+            <td>{% if l.approved_by %}{{ l.approved_by.get_staff_id() }} - {{ l.approved_by.get_full_name() }}{% endif %}</td>
         </tr>
         {% endfor %}
     </table>
